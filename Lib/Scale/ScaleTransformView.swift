@@ -82,17 +82,12 @@ public extension ScaleTransformView {
         }
         let layer = scalableView.layer
         layer.shadowColor = scaleOptions.shadowColor.cgColor
-        
-        let progressMultiplier = 1 - abs(progress)
-        let widthProgressValue = progressMultiplier * scaleOptions.shadowOffsetMax.width
-        let heightProgressValue = progressMultiplier * scaleOptions.shadowOffsetMax.height
-        
         let offset = CGSize(
-            width: max(scaleOptions.shadowOffsetMin.width, widthProgressValue),
-            height: max(scaleOptions.shadowOffsetMin.height, heightProgressValue)
+            width: max(scaleOptions.shadowOffsetMin.width, (1 - abs(progress)) * scaleOptions.shadowOffsetMax.width),
+            height: max(scaleOptions.shadowOffsetMin.height, (1 - abs(progress)) * scaleOptions.shadowOffsetMax.height)
         )
         layer.shadowOffset = offset
-        layer.shadowRadius = max(scaleOptions.shadowRadiusMin, progressMultiplier * scaleOptions.shadowRadiusMax)
+        layer.shadowRadius = max(scaleOptions.shadowRadiusMin, (1 - abs(progress)) * scaleOptions.shadowRadiusMax)
         layer.shadowOpacity = max(scaleOptions.shadowOpacityMin, (1 - abs(Float(progress))) * scaleOptions.shadowOpacityMax)
     }
     

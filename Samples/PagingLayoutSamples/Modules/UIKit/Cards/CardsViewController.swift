@@ -82,7 +82,7 @@ class CardsViewController: UIViewController, NibBased, ViewModelBased {
         collectionView.isPagingEnabled = true
         collectionView.dataSource = self
         layout.numberOfVisibleItems = 7
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.transparentAttributeWhenCellNotLoaded = true
         collectionView.collectionViewLayout = layout
         collectionView.showsVerticalScrollIndicator = false

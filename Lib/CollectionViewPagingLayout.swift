@@ -38,8 +38,7 @@ public class CollectionViewPagingLayout: UICollectionViewLayout {
     /// See `ZPositionHandler` for details
     public var zPositionHandler: ZPositionHandler = .both
 
-    /// Set `alpha` to zero when the cell is not loaded yet by collection view, enabling this prevents showing a cell before applying
-    /// transforms but may cause flashing when you reload the data
+    /// Set `alpha` to zero when the cell is not loaded yet by collection view, enabling this prevents showing a cell before applying transforms but may cause flashing when you reload the data
     public var transparentAttributeWhenCellNotLoaded: Bool = false
 
     /// The animator for setting `contentOffset`
@@ -103,6 +102,7 @@ public class CollectionViewPagingLayout: UICollectionViewLayout {
     public func setCurrentPage(_ page: Int,
                                animated: Bool = true,
                                completion: (() -> Void)? = nil) {
+//        print("\(#function) | page: \(page)")
         safelySetCurrentPage(page, animated: animated, animator: defaultAnimator, completion: completion)
     }
     
@@ -122,6 +122,7 @@ public class CollectionViewPagingLayout: UICollectionViewLayout {
     /// - Parameter invalidateOffset: change offset and revert it immediately
     /// this fixes the zIndex issue more: https://stackoverflow.com/questions/12659301/uicollectionview-setlayoutanimated-not-preserving-zindex
     public func invalidateLayoutInBatchUpdate(invalidateOffset: Bool = false) {
+//        print("\(#function) | invalidateOffset: \(invalidateOffset)")
         DispatchQueue.main.async { [weak self] in
             if invalidateOffset,
                let collectionView = self?.collectionView,
@@ -218,6 +219,7 @@ public class CollectionViewPagingLayout: UICollectionViewLayout {
     }
     
     override public func invalidateLayout() {
+//        print("\(#function)")
         super.invalidateLayout()
         if let page = currentPageCache {
             setCurrentPage(page, animated: false)
@@ -262,6 +264,7 @@ public class CollectionViewPagingLayout: UICollectionViewLayout {
     }
     
     private func safelySetCurrentPage(_ page: Int, animated: Bool, animator: ViewAnimator?, completion: (() -> Void)? = nil) {
+//        print("\(#function) | page: \(page)")
         if isAnimating {
             currentViewAnimatorCancelable?.cancel()
             isAnimating = false
@@ -277,6 +280,8 @@ public class CollectionViewPagingLayout: UICollectionViewLayout {
         offset = min(offset, Double(maxPossibleOffset))
         let contentOffset: CGPoint = scrollDirection == .horizontal ? CGPoint(x: offset, y: 0) : CGPoint(x: 0, y: offset)
 
+//        print("scrollDirection: \(scrollDirection) | offset: \(offset) | contentOffset: \(contentOffset)")
+        
         if animated {
             isAnimating = true
         }
@@ -305,6 +310,7 @@ public class CollectionViewPagingLayout: UICollectionViewLayout {
     }
 
     private func setContentOffset(with animator: ViewAnimator, offset: CGPoint, completion: (() -> Void)? = nil) {
+        print("\(#function) | offset: \(offset)")
         guard let start = collectionView?.contentOffset else { return }
         let x = offset.x - start.x
         let y = offset.y - start.y

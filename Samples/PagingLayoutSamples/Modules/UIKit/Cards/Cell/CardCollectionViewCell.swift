@@ -60,31 +60,85 @@ class CardCollectionViewCell: UICollectionViewCell, NibBased {
 
 extension CardCollectionViewCell: TransformableView {
     
+//    func transform(progress: CGFloat) {
+////        print("\(#function) | progress: \(progress)")
+//
+//        var alpha = 1 + progress
+//        var y = progress * 13
+//        var angle: CGFloat = 0
+//        var scale: CGFloat = 1 - progress * 0.05
+//
+//        if progress > 3 {
+//            alpha = 1 - progress + 3
+//            y = 3 * 13
+//        }
+//
+//        let offset: CGFloat = 240
+//
+//        if progress < 0, progress >= -0.5 {
+//            alpha = 1
+//            let lProgress = -logProgress(min: 0, max: -0.5, progress: progress)
+//            y = lProgress * offset
+//            angle = lProgress * (-.pi * 0.08)
+//        } else if progress < -0.5, progress > -1 {
+//            alpha = 1
+//            let lProgress = logProgress(min: -0.5, max: -1.0, progress: progress, reverse: true)
+//            y = -offset + lProgress * (CGFloat(offset + 30))
+//            angle = CGFloat(.pi * 0.08) - lProgress * CGFloat(.pi * 0.08)
+//        }
+//
+//        if progress < -0.5 {
+//            scale = 1 + 0.5 * 0.05 + ((progress + 0.5) * 0.35)
+//        }
+//
+//        let adjustScaleProgress = abs(round(progress) - progress)
+//        let adjustScaleLogProgress = logProgress(min: 0, max: 0.5, progress: adjustScaleProgress)
+//        var adjustScale = adjustScaleLogProgress * 0.1
+//        if progress < 0, progress >= -1.0 {
+//            adjustScale *= -1
+//        }
+//
+//        scale -= adjustScale
+//
+//        backgroundContainerView.alpha = alpha
+//        backgroundContainerView.transform = CGAffineTransform(translationX: 0, y: y).scaledBy(x: scale, y: scale).rotated(by: angle)
+//
+//        print("\(#function) | progress: \(progress) | y: \(y) | scale: \(scale) | alpha: \(alpha) | angle: \(angle)")
+//
+//    }
+
     func transform(progress: CGFloat) {
+//        print("\(#function) | progress: \(progress)")
         var alpha = 1 + progress
-        var y = progress * 13
+        let x = progress * 13
+//        var y = progress * 13
+        var y: CGFloat = 0
         var angle: CGFloat = 0
         var scale: CGFloat = 1 - progress * 0.05
-        
+
         if progress > 3 {
             alpha = 1 - progress + 3
-            y = 3 * 13
+//            y = 3 * 13
+            y = 0
+
         }
-        
-        let offset: CGFloat = 240
-        
+
+        let offset: CGFloat = 200
+
         if progress < 0, progress >= -0.5 {
             alpha = 1
             let lProgress = -logProgress(min: 0, max: -0.5, progress: progress)
+//            print("\(#function) | lProgress: \(lProgress)")
             y = lProgress * offset
             angle = lProgress * (-.pi * 0.08)
         } else if progress < -0.5, progress > -1 {
             alpha = 1
             let lProgress = logProgress(min: -0.5, max: -1.0, progress: progress, reverse: true)
+//            print("\(#function) | lProgress: \(lProgress)")
             y = -offset + lProgress * (CGFloat(offset + 30))
             angle = CGFloat(.pi * 0.08) - lProgress * CGFloat(.pi * 0.08)
         }
-        
+
         if progress < -0.5 {
             scale = 1 + 0.5 * 0.05 + ((progress + 0.5) * 0.35)
         }
@@ -95,15 +149,23 @@ extension CardCollectionViewCell: TransformableView {
         if progress < 0, progress >= -1.0 {
             adjustScale *= -1
         }
-        
+
         scale -= adjustScale
-        
+
+
+//        print("\(#function) | progress: \(progress) | x: \(x) | y: \(y) | scale: \(scale) | alpha: \(alpha) | angle: \(angle)")
+
         backgroundContainerView.alpha = alpha
-        backgroundContainerView.transform = CGAffineTransform(translationX: 0, y: y).scaledBy(x: scale, y: scale).rotated(by: angle)
-            
+//        backgroundContainerView.transform = CGAffineTransform(translationX: 0, y: -y).scaledBy(x: scale, y: scale).rotated(by: angle)
+        //        backgroundContainerView.transform = CGAffineTransform(translationX: y, y: 0).scaledBy(x: scale, y: scale).rotated(by: angle)
+
+
+        backgroundContainerView.transform = CGAffineTransform(translationX: y, y: -x).scaledBy(x: scale, y: scale)
+
     }
-    
+
     func zPosition(progress: CGFloat) -> Int {
+//        print("\(#function) | progress: \(progress)")
         if progress < -0.5 {
             return -10
         }

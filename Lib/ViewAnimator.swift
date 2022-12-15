@@ -44,11 +44,13 @@ public class DefaultViewAnimator: ViewAnimator {
     }
 
     public init(_ duration: TimeInterval, curve: Curve) {
+        print("\(#function) | duration: \(duration) | curve: \(curve.hashValue)")
         self.animationDuration = duration
         self.curve = curve
     }
 
     public func animate(animations: @escaping (Double, Bool) -> Void) -> ViewAnimatorCancelable? {
+        print("\(#function)")
         if !Thread.isMainThread {
             fatalError("only from main thread")
         }
@@ -68,6 +70,7 @@ public class DefaultViewAnimator: ViewAnimator {
     }
 
     @objc private func update() {
+        print("\(#function)")
         guard displayLink != nil else { return }
         let delta = CACurrentMediaTime() - start
         let progress = curve.fromLinear(progress: delta / duration)
